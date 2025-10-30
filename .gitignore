@@ -142,8 +142,3 @@ pnpm-lock.yaml
 .yarn/install-state.gz
 .pnp.*
 
-# Vite
-vite.config.js.timestamp-*
-
-# Vite build cache
-node_modules/.vite
