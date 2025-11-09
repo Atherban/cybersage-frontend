@@ -1,4 +1,5 @@
 import React from "react";
+import "./LandingPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/auth.store.js"; // Adjust path as needed
 import { useAppStore } from "../../stores/use.store.js"; // If you have other stores
@@ -65,69 +66,51 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      {/* Navigation */}
       <nav className="navbar">
-        <div className="container">
-          <div className="nav-content">
-            <div className="logo">Cybersage</div>
+        <div className="nav-container">
+          <div className="logo-container">
+            <h4 className="font-title">CyberSage</h4>
+          </div>
+          <div className="nav-links-container">
             <ul className="nav-links">
-              <li>
-                <a href="#about">About</a>
+              <li className="font-hero" onClick={() => navigate("/about")}>
+                about
               </li>
-              <li>
-                <a href="/quiz">Quiz</a>
-              </li>
-              <li>
-                <a href="#contact">Contact</a>
+              <li onClick={() => navigate("/quiz")} className="font-hero">
+                quiz
               </li>
             </ul>
-
-            {/* User Section with Logout */}
-            <div className="user-section">
-              {isAuthenticated && user && (
-                <span className="user-welcome">
-                  Welcome, {user.username || user.email}!
-                </span>
-              )}
-              <button className="logout-button" onClick={handleConfirmLogout}>
-                Logout
-              </button>
-            </div>
+          </div>
+          <div className="logout-container">
+            <button className="logout-btn" onClick={handleConfirmLogout}>
+              Logout
+            </button>
           </div>
         </div>
       </nav>
-
       {/* Hero Section */}
       <section className="hero-section" id="home">
-        <div className="container">
-          <div className="hero-content">
-            {/* Left - Hero Text */}
-            <div className="hero-text">
-              <h1 className="hero-title">
-                Cybersecurity
-                <br />
-                Intelligence
-                <br />
-                Platform
-              </h1>
-              <p className="hero-subtitle">
-                Enhance your security awareness through interactive learning and
-                stay informed about the latest cyber threats. Test your
-                knowledge with scenario-based challenges.
-              </p>
-              <div className="quote">
-                "The only truly secure system is one that is powered off, cast
-                in a block of concrete and sealed in a lead-lined room with
-                armed guards - and even then I have my doubts."
-                <span className="quote-author">— Gene Spafford</span>
-              </div>
+        <div className="hero-content">
+          {/* Left - Hero Text */}
+          <div className="hero-text">
+            <p className="hero-sub">
+              Enhance your security <span>"awareness"</span>
+              <br />
+              through
+              <br />
+              <span> "interactive learning"</span>
               <button className="cta-button" onClick={handleStartQuiz}>
                 Begin Security Assessment
               </button>
-            </div>
-
-            {/* Right - News Section */}
+            </p>
+          </div>
+          <div className="right-news" data-lenis-prevent>
             <NewsSection />
+          </div>
+          <div className="quote font-body">
+            Begin your transformation in our security training ground: level up
+            your cyber defense, and evolve from thinking like a hacker to
+            defending like a professional.
           </div>
         </div>
       </section>

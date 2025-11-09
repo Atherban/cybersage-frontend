@@ -1,0 +1,7 @@
+.loading-screen {
+  min-height: 100dvh;
+  min-width: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

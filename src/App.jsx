@@ -21,25 +21,39 @@ import { API_URL } from "./constants/api";
 
 // Styles
 import "./App.css";
+import NewsSection from "./components/molecules/NewsSection.jsx";
+import About from "./components/organisms/About.jsx";
 
 // Configure axios base URL
 axios.defaults.baseURL = API_URL;
 
 function App() {
-  const { auth } = useAppStore();
+  const { auth, aiChat, ui } = useAppStore();
 
   useEffect(() => {
+    // Simulate initial load
+    ui.setLoadingMessage("Securing connection...");
+    ui.setLoadingProgress(10);
+
+    setTimeout(() => ui.setLoadingProgress(60), 500);
+    setTimeout(() => ui.setLoadingProgress(100), 1000);
+
+    // Once auth check completes, hide loader
+    if (auth.isAuthenticated !== undefined) {
+      ui.completeLoading();
+    }
     // Check authentication status on app load
     if (auth.token && !auth.isAuthenticated) {
       auth.checkAuth();
     }
-  }, [auth]);
+  }, [auth, auth.isAuthenticated]);
 
   return (
     <Router>
       <div className="App">
         <NotificationSystem />
-        <AIChatBot />
+
+        {aiChat.isChatOpen && <AIChatBot key={Date.now()} />}
 
         <Routes>
           {/* Public routes */}
@@ -71,6 +85,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <QuizPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <ProtectedRoute>
+                <About />
               </ProtectedRoute>
             }
           />

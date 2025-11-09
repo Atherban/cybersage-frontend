@@ -9,6 +9,8 @@
 # testing
 /coverage
 
+*.tldr
+
 # production
 /build
 /dist

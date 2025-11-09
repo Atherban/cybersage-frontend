@@ -1,3 +1,4 @@
+/* Notifications - Minimalist Elegant Theme */
 .notification-container {
   position: fixed;
   top: 100px;
@@ -5,69 +6,167 @@
   z-index: 10000;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 400px;
+  gap: 12px;
+  max-width: 380px;
 }
 
 .notification {
-  background: #ffffff;
-  border: 2px solid #000000;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(127, 255, 212, 0.3);
+  border-radius: 12px;
   padding: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.notification::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  opacity: 0.8;
 }
 
 .notification:hover {
-  transform: translateX(-5px);
+  transform: translateX(-4px);
+  border-color: rgba(127, 255, 212, 0.6);
+  box-shadow: 0 12px 32px rgba(0, 119, 255, 0.15);
 }
 
-.notification.info {
-  border-left: 4px solid #000000;
+/* Notification Types */
+.notification.info::before {
+  background: #42a5f5;
 }
 
-.notification.success {
-  border-left: 4px solid #000000;
-  background: #f8f8f8;
+.notification.success::before {
+  background: #66bb6a;
 }
 
-.notification.warning {
-  border-left: 4px solid #666666;
+.notification.warning::before {
+  background: #ffa726;
 }
 
-.notification.error {
-  border-left: 4px solid #333333;
-  background: #f8f8f8;
+.notification.error::before {
+  background: #ff6b6b;
 }
 
 .notification-content {
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .notification-message {
   flex: 1;
-  color: #000000;
+  color: azure;
+  font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
   line-height: 1.4;
+  margin: 0;
 }
 
 .notification-close {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
-  color: #666666;
-  padding: 0;
-  width: 20px;
-  height: 20px;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 4px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .notification-close:hover {
-  color: #000000;
+  background: rgba(255, 255, 255, 0.15);
+  color: azure;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Progress Bar Animation */
+.notification::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scaleX(1);
+  transform-origin: left;
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .notification-container {
+    top: 80px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+
+  .notification:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .notification {
+    transition: none;
+  }
+
+  .notification:hover {
+    transform: none;
+  }
+
+  .notification::after {
+    animation: none;
+    display: none;
+  }
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  .notification {
+    background: #000000;
+    border: 2px solid #ffffff;
+  }
+
+  .notification.info::before {
+    background: #007bff;
+  }
+  .notification.success::before {
+    background: #28a745;
+  }
+  .notification.warning::before {
+    background: #ffc107;
+  }
+  .notification.error::before {
+    background: #dc3545;
+  }
+
+  .notification-close {
+    border: 2px solid #ffffff;
+  }
 }

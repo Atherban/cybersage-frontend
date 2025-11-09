@@ -1,13 +1,39 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: monospace;
-}
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;600;800&family=Poppins:wght@300;400;500;600&display=swap");
 
+/* ===== FONT STYLES ===== */
 html,
 body {
+  overflow: auto;
   height: 100%;
   width: 100%;
-  padding: 12px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+.font-title {
+  font-family: "Orbitron", sans-serif;
+  color: #00ffff;
+  background: url("../src/assets/images/clips/bg-title.jpeg");
+  background-position: center;
+  text-shadow: 0 0 75px #f1a5fb, 0 0 75px #0077ff;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.font-hero {
+  font-family: "Audiowide", cursive;
+  background: url("../src/assets/images/clips/bg-hero.jpeg");
+  background-position: center;
+  text-shadow: 0 0 75px #df96e9e9, 0 0 75px #0077ffc5;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  color: #fff;
+}
+
+.font-body {
+  font-family: "Poppins", sans-serif;
+  color: white;
 }

@@ -10,6 +10,16 @@ export const useUIStore = create((set) => ({
     auth: false,
   },
 
+  isLoadingComplete: false,
+  loadingProgress: 0,
+  currentLoadingMessage: "Initializing...",
+
+  setLoadingProgress: (value) => set(() => ({ loadingProgress: value })),
+
+  setLoadingMessage: (msg) => set(() => ({ currentLoadingMessage: msg })),
+
+  completeLoading: () => set(() => ({ isLoadingComplete: true })),
+
   // Notifications
   notifications: [],
 

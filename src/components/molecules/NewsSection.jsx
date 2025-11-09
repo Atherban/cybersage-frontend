@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants/api";
+import "./NewsSection.css";
 
 const NewsSection = () => {
   const [news, setNews] = useState([]);
@@ -15,48 +16,54 @@ const NewsSection = () => {
     }
   }, []);
 
-  const fetchNews = async () => {
+  const fetchNews = async (force = false) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(`${API_URL}/news`);
 
+      if (!force) {
+        const cachedData = localStorage.getItem("cybersage_news_cache");
+        if (cachedData) {
+          const parsed = JSON.parse(cachedData);
+          setNews(parsed);
+          setLoading(false);
+          return;
+        }
+      }
+
+      const response = await axios.get(`${API_URL}/news`);
       if (response.data.cybersecurity_news) {
-        setNews(response.data.cybersecurity_news.slice(0, 3)); // Show only 3 latest news
+        const latest = response.data.cybersecurity_news.slice(0, 3);
+        setNews(latest);
+        localStorage.setItem("cybersage_news_cache", JSON.stringify(latest));
       } else {
-        setError("No news data available");
+        setError("No news available");
       }
     } catch (err) {
-      setError("Failed to fetch latest threats");
-      console.error("Error fetching news:", err);
+      setError("Failed to fetch news");
     } finally {
       setLoading(false);
     }
   };
 
   const refreshNews = () => {
-    fetchNews();
+    localStorage.removeItem("cybersage_news_cache");
+    fetchNews(true); // force API fetch
   };
 
-  const getSeverityClass = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case "critical":
-        return "severity-critical";
-      case "high":
-        return "severity-high";
-      case "medium":
-        return "severity-medium";
-      case "low":
-        return "severity-low";
-      default:
-        return "severity-medium";
-    }
+  const getSeverityColor = (severity) => {
+    const colors = {
+      critical: "#FF6B6B",
+      high: "#FFA726",
+      medium: "#42A5F5",
+      low: "#66BB6A",
+    };
+    return colors[severity?.toLowerCase()] || "#42A5F5";
   };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
     });
   };
@@ -64,83 +71,86 @@ const NewsSection = () => {
   return (
     <div className="news-section">
       <div className="news-header">
-        <h2 className="news-title">Threat Intelligence Brief</h2>
+        <div className="header-content">
+          <h2 className="section-title font-title">Latest Threats</h2>
+          <p className="section-subtitle font-body">
+            Recent cybersecurity updates
+          </p>
+        </div>
         <button
-          className="refresh-button"
+          className="refresh-btn"
           onClick={refreshNews}
           disabled={loading}
         >
-          {loading ? "Updating..." : "Update"}
+          {loading ? "⟳" : "↻"}
         </button>
       </div>
 
-      {loading && (
-        <div className="loading">
-          <div className="loading-spinner"></div>
-          Gathering latest intelligence...
-        </div>
-      )}
-
-      {error && (
-        <div className="error">
-          <p>{error}</p>
-          <button onClick={refreshNews} className="retry-button">
-            Retry Connection
-          </button>
-        </div>
-      )}
-
-      {!loading && !error && news.length === 0 && (
-        <div className="no-news">
-          <p>No active threats reported at this time</p>
-          <button onClick={refreshNews} className="retry-button">
-            Refresh Status
-          </button>
-        </div>
-      )}
-
-      {!loading && !error && news.length > 0 && (
-        <div className="news-list">
-          {news.map((item, index) => (
-            <div key={`${item.title}-${index}`} className="news-item">
-              <div className="news-item-header">
-                <h3 className="news-item-title">{item.title}</h3>
-                {item.severity_level && (
-                  <span
-                    className={`severity-badge ${getSeverityClass(
-                      item.severity_level
-                    )}`}
-                  >
-                    {item.severity_level}
-                  </span>
-                )}
-              </div>
-
-              <p className="news-item-description">{item.description}</p>
-
-              <div className="news-item-footer">
-                <span className="news-date">{formatDate(item.date)}</span>
-                <span className="news-source">{item.source}</span>
-              </div>
-
-              {item.attack_vectors && item.attack_vectors.length > 0 && (
-                <div className="attack-vectors">
-                  <strong>Attack Methods: </strong>
-                  {item.attack_vectors.join(" • ")}
-                </div>
-              )}
-
-              {item.affected_entities && item.affected_entities.length > 0 && (
-                <div className="affected-entities">
-                  <strong>Primary Targets: </strong>
-                  {item.affected_entities.slice(0, 3).join(", ")}
-                  {item.affected_entities.length > 3 && "..."}
-                </div>
-              )}
+      <div className="news-content">
+        {loading && (
+          <div className="loading-state">
+            <div className="loading-dots">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
-          ))}
-        </div>
-      )}
+            <p>Loading threats...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="error-state">
+            <p>{error}</p>
+            <button onClick={refreshNews} className="retry-btn">
+              Retry
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && news.length === 0 && (
+          <div className="empty-state">
+            <p>No active threats reported</p>
+          </div>
+        )}
+
+        {!loading && !error && news.length > 0 && (
+          <div className="news-list">
+            {news.map((item, index) => (
+              <div key={`${item.title}-${index}`} className="news-item">
+                <div className="item-header">
+                  <div
+                    className="severity-indicator"
+                    style={{
+                      backgroundColor: getSeverityColor(item.severity_level),
+                    }}
+                  ></div>
+                  <div className="item-meta">
+                    <span className="item-date">{formatDate(item.date)}</span>
+                    <span className="item-source">{item.source}</span>
+                  </div>
+                </div>
+
+                <h3 className="item-title">{item.title}</h3>
+                <p className="item-description">{item.description}</p>
+
+                <div className="item-tags">
+                  {item.severity_level && (
+                    <span
+                      className="severity-tag"
+                      style={{
+                        color: getSeverityColor(item.severity_level),
+                        borderColor: getSeverityColor(item.severity_level),
+                      }}
+                    >
+                      {item.severity_level}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

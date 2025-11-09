@@ -42,7 +42,7 @@ export const useQuizStore = create((set, get) => ({
 
   // NEW: Progression system
   moduleProgress: {},
-  unlockedModules: ["digital_arrest"], // Start with first module
+  unlockedModules: ["digital_arrest", "cyber_attacks"], // Start with first module
   completedModules: [],
   certificates: {},
   userScores: {},

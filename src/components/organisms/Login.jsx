@@ -57,8 +57,8 @@ const Login = () => {
       <div className="auth-container">
         <div className="auth-card">
           <div className="auth-header">
-            <h1 className="auth-title">Cybersage</h1>
-            <p className="auth-subtitle">Sign in to your account</p>
+            <h1 className="font-title">Cybersage</h1>
+            <p className="font-hero">Sign in to your account</p>
           </div>
 
           {auth.error && <div className="auth-error">{auth.error}</div>}
@@ -108,7 +108,6 @@ const Login = () => {
           <div className="auth-divider">
             <span>or</span>
           </div>
-
 
           <div className="auth-footer">
             <p>

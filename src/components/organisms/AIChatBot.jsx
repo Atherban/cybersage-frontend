@@ -1,86 +1,136 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useAppStore } from "../../stores/use.store.js";
 import "./AIChatBot.css";
 
 const AIChatBot = () => {
-  const { aiChat, ui } = useAppStore();
+  // Remove ANY old chatbot DOM nodes before rendering
+  useEffect(() => {
+    const allBots = document.querySelectorAll(".ai-chatbot");
+    if (allBots.length > 1) {
+      // ✅ hide older ones without removing them
+      allBots.forEach((bot, i) => {
+        if (i < allBots.length - 1) {
+          bot.style.display = "none";
+          bot.classList.add("hidden-bot");
+        }
+      });
+    }
+  }, []);
+
+  const { aiChat } = useAppStore();
   const [inputMessage, setInputMessage] = useState("");
+  const [isLocked, setIsLocked] = useState(false); // ✅ prevents multiple messages
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  /* ---------- Auto Scroll ---------- */
+  const scrollToBottom = useCallback(() => {
+    requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    });
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [aiChat.chatMessages]);
+  }, [aiChat.chatMessages, scrollToBottom]);
 
-  const handleSendMessage = async (e) => {
+  /* ---------- Send Message (single at a time) ---------- */
+  const sendSingleMessage = useCallback(
+    async (text) => {
+      if (!text.trim() || aiChat.isTyping || isLocked) return;
+
+      setIsLocked(true); // ✅ lock until answer received
+
+      try {
+        await aiChat.sendMessage(text);
+      } catch {
+        aiChat.addMessage({
+          role: "assistant",
+          content: "⚠️ There was a connection issue. Try again.",
+          isError: true,
+          timestamp: Date.now(),
+        });
+      }
+
+      // ✅ unlock after typing stops
+      const unlockCheck = setInterval(() => {
+        if (!aiChat.isTyping) {
+          clearInterval(unlockCheck);
+          setIsLocked(false);
+        }
+      }, 300);
+    },
+    [aiChat, isLocked]
+  );
+
+  /* ---------- Manual Send ---------- */
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim() || aiChat.isTyping) return;
-
-    const message = inputMessage.trim();
+    const text = inputMessage.trim();
     setInputMessage("");
-    await aiChat.sendMessage(message);
+    await sendSingleMessage(text);
   };
 
-  const handleQuickQuestion = async (question) => {
-    setInputMessage("");
-    await aiChat.sendMessage(question);
+  /* ---------- Quick Ask ---------- */
+  const handleQuickAsk = (q) => {
+    sendSingleMessage(q);
   };
 
-  const handleCloseChat = () => {
+  /* ---------- Close Chat ---------- */
+  const closeChat = () => {
+    const bot = document.querySelector(".ai-chatbot");
+    if (bot) bot.classList.add("hide"); //visually and interactively removed
     aiChat.closeChat();
   };
 
+  /* ---------- Hidden UI If Closed ---------- */
   if (!aiChat.isChatOpen) return null;
 
   return (
-    <div className="ai-chatbot">
+    <div className="ai-chatbot slide-up">
       <div className="chat-header">
         <div className="chat-title">
-          <span className="chat-icon">🤖</span>
-          <span>Cybersage AI Assistant</span>
+          <span className="bot-title">SageBot</span>
         </div>
-        <button className="close-chat" onClick={handleCloseChat}>
+        <button className="close-chat" onClick={closeChat}>
           ×
         </button>
       </div>
 
+      {/* ---------- Messages Area ---------- */}
       <div className="chat-messages">
         {aiChat.chatMessages.length === 0 && (
           <div className="welcome-message">
-            <p>
-              Hello! I'm here to help you understand cybersecurity concepts.
-            </p>
-            <p>Ask me anything about the questions you're working on!</p>
+            <p>Hello! I can explain cybersecurity concepts.</p>
+            <p>Try: “Explain phishing in one line”</p>
           </div>
         )}
 
-        {aiChat.chatMessages.map((message) => (
-          <div key={message.id} className={`message ${message.role}`}>
+        {aiChat.chatMessages.map((msg) => (
+          <div key={msg.id} className={`message ${msg.role}`}>
             <div className="message-content">
-              {message.content}
-              {message.isError && (
-                <div className="message-error">⚠️ Connection issue</div>
+              {msg.content}
+              {msg.isError && (
+                <div className="message-error">⚠ Connection lost</div>
               )}
             </div>
+
             <div className="message-time">
-              {new Date(message.timestamp).toLocaleTimeString([], {
+              {new Date(msg.timestamp).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
             </div>
 
-            {message.role === "assistant" && message.suggested_follow_ups && (
+            {msg.role === "assistant" && msg.suggested_follow_ups && (
               <div className="suggested-questions">
-                {message.suggested_follow_ups.map((question, index) => (
+                {msg.suggested_follow_ups.map((q, idx) => (
                   <button
-                    key={index}
+                    key={idx}
                     className="suggested-question"
-                    onClick={() => handleQuickQuestion(question)}
+                    onClick={() => handleQuickAsk(q)}
+                    disabled={isLocked || aiChat.isTyping} // ✅ disabled until response ends
                   >
-                    {question}
+                    {q}
                   </button>
                 ))}
               </div>
@@ -88,6 +138,7 @@ const AIChatBot = () => {
           </div>
         ))}
 
+        {/* Assistant typing */}
         {aiChat.isTyping && (
           <div className="message assistant">
             <div className="typing-indicator">
@@ -101,20 +152,21 @@ const AIChatBot = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <form className="chat-input-form" onSubmit={handleSendMessage}>
+      {/* ---------- Message Input ---------- */}
+      <form className="chat-input-form" onSubmit={handleFormSubmit}>
         <div className="chat-input-container">
           <input
+            className="chat-input"
             type="text"
+            placeholder="Ask a cybersecurity question..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Ask about cybersecurity concepts..."
-            disabled={aiChat.isTyping}
-            className="chat-input"
+            disabled={aiChat.isTyping || isLocked} // ✅ locked until assistant finishes
           />
           <button
             type="submit"
-            disabled={!inputMessage.trim() || aiChat.isTyping}
             className="send-button"
+            disabled={!inputMessage.trim() || aiChat.isTyping || isLocked}
           >
             Send
           </button>

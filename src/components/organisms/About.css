@@ -1,0 +1,800 @@
+/* About Page Styles - Cyber Security Game UI */
+.about-page {
+  min-height: 100vh;
+  background: black;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: azure;
+  font-family: "Poppins", sans-serif;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.points-badge {
+  background-size: cover;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Modern Hero Section */
+.about-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.about-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.about-hero > .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+}
+
+.hero-text {
+  width: fit-content;
+  position: relative;
+}
+
+.hero-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  background: url("../../assets/images/clips/bg-hero.jpeg");
+  background-position: top;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 50px rgba(127, 255, 212, 0.5);
+}
+
+.hero-subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 3rem;
+  max-width: 90%;
+}
+
+.hero-subtitle strong {
+  color: aquamarine;
+  font-weight: 600;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+/* Enhanced Cyber Orb Animation */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.cyber-orb {
+  position: relative;
+  background-color: black;
+  width: 400px;
+  height: 400px;
+}
+
+.orb-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, aquamarine 0%, #0077ff 50%, #f1a5fb 100%);
+  border-radius: 50%;
+  filter: blur(15px);
+  animation: pulse 4s ease-in-out infinite;
+  box-shadow: 0 0 60px rgba(127, 255, 212, 0.6);
+}
+
+.orb-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    aquamarine,
+    #0077ff,
+    #f1a5fb,
+    transparent
+  );
+  animation: rotate 15s linear infinite;
+  mask: radial-gradient(circle, transparent 40%, black 41%);
+}
+
+.orb-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #f1a5fb;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(calc(var(--i) * 30deg))
+    translateX(200px);
+  animation: particle-float 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.3s);
+  box-shadow: 0 0 10px #f1a5fb;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+    filter: blur(15px);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+    filter: blur(20px);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes particle-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(calc(var(--i) * 30deg))
+      translateX(200px) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(calc(var(--i) * 30deg))
+      translateX(180px) scale(1.3);
+    opacity: 1;
+  }
+}
+
+/* Enhanced Mission Section */
+.mission-section {
+  padding: 120px 0;
+  position: relative;
+}
+
+.mission-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(10, 10, 40, 0.9) 100%
+  );
+  z-index: 1;
+}
+
+.mission-section > .container {
+  position: relative;
+  z-index: 2;
+}
+
+.mission-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(20, 20, 60, 0.6) 100%
+  );
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(127, 180, 255, 0.4);
+  border-radius: 2.5rem;
+  padding: 4rem;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(127, 200, 255, 0.124),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(127, 204, 255, 0.1),
+    transparent
+  );
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+.mission-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.mission-header h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, aquamarine, #f1a5fb, #0077ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 50px rgba(127, 214, 255, 0.5);
+  margin: 0;
+  font-weight: 800;
+}
+
+.mission-icon {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(127, 255, 212, 0.5));
+}
+
+.mission-content p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mission-content strong {
+  color: rgb(127, 165, 255);
+  font-weight: 600;
+}
+
+.mission-principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  margin-top: 4rem;
+}
+
+.principle {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  text-align: left;
+  padding: 2rem;
+  background: rgba(127, 197, 255, 0.05);
+  border: 1px solid rgba(127, 193, 255, 0.2);
+  border-radius: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.principle:hover {
+  transform: translateY(-5px);
+  border-color: rgb(127, 185, 255);
+  box-shadow: 0 10px 30px rgba(127, 189, 255, 0.2);
+  background: rgba(127, 195, 255, 0.1);
+}
+
+.principle-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 10px rgba(127, 193, 255, 0.5));
+}
+
+.principle h4 {
+  font-family: "Orbitron", sans-serif;
+  color: rgb(127, 191, 255);
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.principle p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.6;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Enhanced Card Styles Throughout */
+.stats-section,
+.features-section,
+.team-section,
+.cta-section {
+  padding: 120px 0;
+  position: relative;
+}
+
+.stats-section::before,
+.features-section::before,
+.team-section::before,
+.cta-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(10, 10, 40, 0.9) 100%
+  );
+  z-index: 1;
+}
+
+.stats-section > .container,
+.features-section > .container,
+.team-section > .container,
+.cta-section > .container {
+  position: relative;
+  z-index: 2;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-header h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 3rem;
+  background: url("../../assets/images/clips/bg-hero.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 50px rgba(127, 202, 255, 0.5);
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+}
+
+.section-header p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  color: white;
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Enhanced Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+}
+
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(20, 20, 60, 0.5) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(184, 151, 241, 0.55);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.4s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(184, 151, 241, 0.2),
+    transparent
+  );
+  transition: left 0.6s ease-in-out;
+}
+
+.stat-card:hover::before {
+  left: 100%;
+}
+
+.stat-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgb(182, 155, 251);
+  box-shadow: 0 10px 50px rgba(184, 151, 241, 0.334),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stat-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 15px rgba(184, 151, 241, 0.55));
+}
+
+.stat-number {
+  font-family: "Orbitron", sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(184, 151, 241, 0.55);
+}
+
+.stat-label {
+  font-family: "Poppins", sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Enhanced Feature Cards */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
+}
+
+.feature-card {
+  background: linear-gradient(35deg, black, rgba(28, 2, 72, 0.45), black);
+
+  border: 1px solid rgba(121, 162, 244, 0.55);
+  border-radius: 2rem;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  transition: all 0.4s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(101, 159, 242, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease-in-out;
+}
+
+.feature-card:hover::before {
+  left: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-12px) rotate(1deg);
+  border-color: #6f92f3;
+  box-shadow: 0 25px 50px rgba(95, 160, 240, 0.3),
+    inset 0 1px 0 rgba(94, 149, 243, 0.1);
+}
+
+.feature-icon {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 15px rgba(241, 165, 251, 0.5));
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.feature-description {
+  font-family: "Poppins", sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Enhanced CTA Section */
+.cta-card {
+  background: url("../../assets/images/clips/bg-image.jpeg");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(127, 187, 255, 0.4);
+  border-radius: 2.5rem;
+  padding: 5rem 4rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 4rem;
+  align-items: center;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(127, 178, 255, 0.1),
+    transparent,
+    rgba(241, 165, 251, 0.1),
+    transparent
+  );
+  animation: rotate 20s linear infinite;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-content h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 3.5rem;
+  background: url("../../assets/images/clips/bg-hero.jpeg");
+  background-position: left;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 50px rgba(127, 255, 212, 0.5);
+  margin-bottom: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.cta-content p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.3rem;
+  color: rgb(255, 255, 255);
+  line-height: 1.7;
+  margin-bottom: 3rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cta-button.primary {
+  background: url("../../assets/images/clips/bg-hero.jpeg");
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.cta-button.primary:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(155, 62, 241, 0.342);
+}
+
+.cta-button.secondary {
+  background: url("../../assets/images/clips/bg-hero.jpeg");
+  color: white;
+}
+
+.cta-button.secondary:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(156, 105, 243, 0.4);
+}
+
+.cta-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.floating-shield {
+  font-size: 10rem;
+  animation: float-shield 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(129, 127, 255, 0.5));
+}
+
+@keyframes float-shield {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  66% {
+    transform: translateY(-10px) rotate(-3deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cyber-orb {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .mission-card,
+  .cta-card {
+    padding: 2.5rem 2rem;
+  }
+
+  .cta-card {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .cta-buttons {
+    justify-content: center;
+  }
+
+  .mission-principles {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid,
+  .features-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .mission-card,
+  .cta-card,
+  .stat-card,
+  .feature-card,
+  .team-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cyber-orb,
+  .mission-icon,
+  .floating-shield,
+  .stat-card,
+  .feature-card,
+  .team-card,
+  .principle,
+  .cta-button,
+  .mission-card::before,
+  .stat-card::before,
+  .feature-card::before,
+  .cta-card::before {
+    animation: none;
+    transition: none;
+  }
+
+  .stat-card:hover,
+  .feature-card:hover,
+  .team-card:hover,
+  .principle:hover,
+  .cta-button:hover {
+    transform: none;
+  }
+}

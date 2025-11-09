@@ -10,7 +10,7 @@ const NotificationSystem = () => {
     const timers = notifications.map((notif) =>
       setTimeout(() => {
         removeNotification(notif.id);
-      }, 5000)
+      }, 4000)
     );
 
     return () => {
