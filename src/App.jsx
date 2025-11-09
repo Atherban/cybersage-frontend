@@ -23,6 +23,7 @@ import { API_URL } from "./constants/api";
 import "./App.css";
 import NewsSection from "./components/molecules/NewsSection.jsx";
 import About from "./components/organisms/About.jsx";
+import TestCertificate from "./components/organisms/TestCertificate.jsx";
 
 // Configure axios base URL
 axios.defaults.baseURL = API_URL;
@@ -102,6 +103,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <QuizQuestions />
+              </ProtectedRoute>
+            }
+          />
+          {/* Test Certificate Download */}
+          <Route
+            path="/test-certificate"
+            element={
+              <ProtectedRoute>
+                <TestCertificate />
               </ProtectedRoute>
             }
           />

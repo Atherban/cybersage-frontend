@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../stores/use.store.js";
 import "./QuizPage.css";
+import CertificateDownload from "../molecules/CertificateDownload.jsx";
 
 const QuizPage = () => {
   const navigate = useNavigate();
@@ -123,37 +124,6 @@ const QuizPage = () => {
       goToQuiz();
     },
     [quiz.getModuleStatus, ui, navigate, getModuleStatus]
-  );
-
-  const handleDownloadCertificate = useCallback(
-    async (moduleId, event) => {
-      event.stopPropagation();
-
-      if (!quiz.generateCertificate) {
-        ui.addNotification?.("Certificate feature not available yet", "info");
-        return;
-      }
-
-      try {
-        const result = await quiz.generateCertificate(moduleId);
-        if (result.success) {
-          const link = document.createElement("a");
-          link.href = result.downloadUrl;
-          link.download = `cybersage-certificate-${moduleId}.json`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          ui.addNotification?.(
-            "Certificate downloaded successfully!",
-            "success"
-          );
-        }
-      } catch (error) {
-        ui.addNotification?.("Failed to download certificate", "error");
-      }
-    },
-    [quiz, ui]
   );
 
   const handleResetProgress = useCallback(() => {
@@ -465,14 +435,14 @@ const QuizPage = () => {
                       {quiz.getModuleStatus &&
                         isCompleted &&
                         status?.certificate && (
-                          <button
-                            className="certificate-btn"
-                            onClick={(e) =>
-                              handleDownloadCertificate(module.id, e)
+                          <CertificateDownload
+                            userName={user.name || user.email || "Learner"}
+                            moduleName={module.name}
+                            score={completion.score}
+                            date={
+                              completion.date || new Date().toLocaleDateString()
                             }
-                          >
-                            📜 Download Certificate
-                          </button>
+                          />
                         )}
                     </div>
 
